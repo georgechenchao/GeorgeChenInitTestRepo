@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Frameworks>
+  <Framework Name="netcore-1.0" Source="netcore-1.0">
+    <assemblySearchPath>dependencies\netcore-1.0</assemblySearchPath>
+  </Framework>
+</Frameworks>
