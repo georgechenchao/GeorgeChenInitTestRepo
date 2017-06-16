@@ -13,8 +13,8 @@ function Unzip
 }
 
 $url = "https://github.com/mono/api-doc-tools/releases/download/preview-5.0.0.14/preview-mdoc-5.0.0.14.zip"
-$currentCommit = GIT_COMMIT
-$lastCommit = GIT_PREVIOUS_COMMIT
+$currentCommit = &GIT_COMMIT
+$lastCommit = &GIT_PREVIOUS_COMMIT
 
 $currentCommit;
 $lastCommit;
