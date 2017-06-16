@@ -18,3 +18,8 @@ $lastCommit = $env:GIT_PREVIOUS_COMMIT
 
 $currentCommit;
 $lastCommit;
+
+$changeListForRepo = &git diff --name-only $lastCommit $currentCommit
+$testText = "Test Text";
+$testText;
+$changeListForRepo;
