@@ -21,5 +21,6 @@ $lastCommit;
 
 $changeListForRepo = &git diff --name-only $lastCommit $currentCommit
 $testText = "Test Text";
+$testText = "Test Text";
 $testText;
 $changeListForRepo;
