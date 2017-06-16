@@ -1,7 +1,7 @@
 ﻿param (
-    [string]$contentRepoUrl = "https://15d31288ed2da003cd5275c185ae1a6859261d19@github.com/georgechenchao/georgechenchaoRepo1215041730.git",
-    [string]$branch = "CITest4",
-    [string]$xmlPath = "fulldocset/xml"
+    [string]$contentRepoUrl = "https://1ddeb6f0cbf6cbf40fdbfbcb43a8da3239d5f5dd@github.com/georgechenchao/georgechenchaoRepo1215041730.git",
+    [string]$branch = "CITest002",
+    [string]$xmlPath = "CITestConsole2/xml"
 )
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -35,6 +35,10 @@ Unzip $mdocZipPath $mdocPath
 
 $contentRepoPath = Join-Path $scriptPath "contentRepo"
 $xmlPath = Join-Path $contentRepoPath $xmlPath
+if (-Not (Test-Path $xmlPath))
+{
+    New-Item $xmlPath -ItemType directory
+}
 & git clone $contentRepoUrl $contentRepoPath
 Push-Location $contentRepoPath
 $checkBr = & git ls-remote --heads $contentRepoUrl $branch
