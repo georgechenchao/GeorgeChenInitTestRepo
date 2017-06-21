@@ -13,11 +13,23 @@ function Unzip
 }
 
 $url = "https://github.com/mono/api-doc-tools/releases/download/preview-5.0.0.14/preview-mdoc-5.0.0.14.zip"
-$currentCommit = GIT_COMMIT
-$lastCommit = GIT_PREVIOUS_COMMIT
-
-$currentCommit;
-$lastCommit;
+$currentCommit = $env:GIT_COMMIT
+$lastCommit = $env:GIT_PREVIOUS_COMMIT
+$changeListForRepo = &git diff --name-only $lastCommit $currentCommit
+$changeListForRepoArray = $changeListForRepo.Split("`n");
+$dllFolderSet = New-Object System.Collections.Generic.List[System.Object];
+ForEach($fileItem in $changeListForRepoArray)
+{
+    if ($fileItem.Trim().EndsWith("dll"))
+    {
+        $folderName = $fileItem.Split("/")[0].Trim();
+        if ($dllFolderSet -notcontains $folderName)
+        {
+            $dllFolderSet.Add($folderName);
+        }
+    }
+}
+$dllFolderSet;
 
 $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 Push-Location $scriptPath
@@ -55,8 +67,11 @@ if (-Not [string]::IsNullOrEmpty($checkBr)) {
 }
 Pop-Location
 
-& $mdocExePath fx-bootstrap .\dotnet
-& $mdocExePath update -o $xmlPath -fx .\dotnet -use-docid
+ForEach($folderName in $dllFolderSet)
+{
+    & $mdocExePath fx-bootstrap (".\" + $folderName)
+    & $mdocExePath update -o $xmlPath -fx (".\" + $folderName) -use-docid
+}
 
 Push-Location $contentRepoPath
 & git add -A

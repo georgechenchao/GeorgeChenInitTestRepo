@@ -29,5 +29,54 @@ ForEach($fileItem in $changeListForRepoArray)
         }
     }
 }
-$dllFolderSet.Count;
 $dllFolderSet;
+
+$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
+Push-Location $scriptPath
+
+$mdocZipPath = Join-Path $scriptPath "mdoc.zip"
+$mdocPath = Join-Path $scriptPath "mdoc"
+$mdocExePath = Join-Path $mdocPath "mdoc.exe"
+if (Test-Path $mdocZipPath)
+{
+    Remove-Item $mdocZipPath
+}
+if (Test-Path $mdocPath)
+{
+    Remove-Item $mdocPath -Recurse
+}
+New-Item $mdocPath -type directory
+Write-Output "Dowloading mdoc from $url"
+Invoke-WebRequest -Uri $url -OutFile $mdocZipPath
+Unzip $mdocZipPath $mdocPath
+
+$contentRepoPath = Join-Path $scriptPath "contentRepo"
+$xmlPath = Join-Path $contentRepoPath $xmlPath
+if (-Not (Test-Path $xmlPath))
+{
+    New-Item $xmlPath -ItemType directory
+}
+& git clone $contentRepoUrl $contentRepoPath
+Push-Location $contentRepoPath
+$checkBr = & git ls-remote --heads $contentRepoUrl $branch
+& git fetch
+& git checkout -B $branch
+if (-Not [string]::IsNullOrEmpty($checkBr)) {
+    & git branch --set-upstream-to=origin/$branch
+    & git pull
+}
+Pop-Location
+
+ForEach($folderName in $dllFolderSet)
+{
+    & $mdocExePath fx-bootstrap (".\" + $folderName)
+    & $mdocExePath update -o $xmlPath -fx (".\" + $folderName) -use-docid
+}
+
+Push-Location $contentRepoPath
+& git add -A
+& git commit -m "mdoc CI update"
+& git push --set-upstream origin $branch
+Pop-Location
+
+Pop-Location
