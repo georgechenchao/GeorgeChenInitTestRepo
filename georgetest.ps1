@@ -13,8 +13,22 @@ function Unzip
 }
 
 $url = "https://github.com/mono/api-doc-tools/releases/download/preview-5.0.0.14/preview-mdoc-5.0.0.14.zip"
+<<<<<<< HEAD
 $currentCommit = GIT_COMMIT
 $lastCommit = GIT_PREVIOUS_COMMIT
 
 $currentCommit;
 $lastCommit;
+=======
+$currentCommit = $env:GIT_COMMIT
+$lastCommit = $env:GIT_PREVIOUS_COMMIT
+
+$currentCommit;
+$lastCommit;
+
+$changeListForRepo = &git diff --name-only $lastCommit $currentCommit
+$testText = "Test Text";
+$testText = "Test Text";
+$testText;
+$changeListForRepo;
+>>>>>>> cd2263e0f37ddab921e62aa758df31fa059682d8
