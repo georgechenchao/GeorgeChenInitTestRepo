@@ -53,10 +53,6 @@ if ($currentCommit -ne $lastCommit -and $changeListForRepo)
     Unzip $mdocZipPath $mdocPath
 
     $contentRepoPath = Join-Path $scriptPath "contentRepo"
-    if (Test-Path $contentRepoPath)
-    {
-        Remove-Item $contentRepoPath -Recurse
-    }
     & git clone $contentRepoUrl $contentRepoPath
     $xmlPath = Join-Path $contentRepoPath $xmlPath
     if (-Not (Test-Path $xmlPath))
@@ -84,6 +80,11 @@ if ($currentCommit -ne $lastCommit -and $changeListForRepo)
     & git commit -m "mdoc CI update"
     & git push --set-upstream origin $branch
     Pop-Location
+
+    if (Test-Path $contentRepoPath)
+    {
+        Remove-Item $contentRepoPath -Recurse
+    }
 
     Pop-Location
 }
