@@ -78,7 +78,7 @@ if ($currentCommit -ne $lastCommit -and $changeListForRepo)
     Push-Location $contentRepoPath
     & git add .
     & git commit -m "mdoc CI update"
-    & git push --set-upstream origin $branch
+    & git push
     Pop-Location
 
     Pop-Location
