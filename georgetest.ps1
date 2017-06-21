@@ -15,17 +15,8 @@ function Unzip
 $url = "https://github.com/mono/api-doc-tools/releases/download/preview-5.0.0.14/preview-mdoc-5.0.0.14.zip"
 $currentCommit = $env:GIT_COMMIT
 $lastCommit = $env:GIT_PREVIOUS_COMMIT
-
-$currentCommit;
-$lastCommit;
-
 $changeListForRepo = &git diff --name-only $lastCommit $currentCommit
-$testText = "Test Text";
-$testText;
-$changeListForRepo;
 $changeListForRepoArray = $changeListForRepo.Split("`n");
-$changeListForRepoArray.Count;
-$changeListForRepoArray;
 $dllFolderSet = New-Object System.Collections.Generic.List[System.Object];
 ForEach($fileItem in $changeListForRepoArray)
 {
@@ -38,5 +29,4 @@ ForEach($fileItem in $changeListForRepoArray)
         }
     }
 }
-$dllFolderSet.Count;
 $dllFolderSet;
