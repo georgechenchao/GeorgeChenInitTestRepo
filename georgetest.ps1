@@ -66,8 +66,13 @@ if ($currentCommit -ne $lastCommit -and $changeListForRepo)
     }
     Pop-Location
 
+    if (-Not (Test-Path $xmlPath))
+    {
+        New-Item $xmlPath -type directory
+    }
     ForEach($folderName in $dllFolderSet)
     {
+        $folderName;
         & $mdocExePath fx-bootstrap (".\" + $folderName)
         & $mdocExePath update -o $xmlPath -fx (".\" + $folderName) -use-docid
     }
