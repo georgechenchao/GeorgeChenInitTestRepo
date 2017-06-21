@@ -26,3 +26,17 @@ $changeListForRepo;
 $changeListForRepoArray = $changeListForRepo.Split("`n");
 $changeListForRepoArray.Count;
 $changeListForRepoArray;
+$dllFolderSet = New-Object System.Collections.Generic.List[System.Object];
+ForEach($fileItem in $changeListForRepoArray)
+{
+    if ($fileItem.Trim().EndsWith("dll"))
+    {
+        $folderName = $fileItem.Split("/")[0].Trim();
+        if ($dllFolderSet -notcontains $folderName)
+        {
+            $dllFolderSet.Add($folderName);
+        }
+    }
+}
+$dllFolderSet.Count;
+$dllFolderSet;
