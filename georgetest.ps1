@@ -29,4 +29,5 @@ ForEach($fileItem in $changeListForRepoArray)
         }
     }
 }
+$dllFolderSet.Count;
 $dllFolderSet;
