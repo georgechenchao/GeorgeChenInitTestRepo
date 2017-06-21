@@ -53,6 +53,10 @@ if ($currentCommit -ne $lastCommit -and $changeListForRepo)
     Unzip $mdocZipPath $mdocPath
 
     $contentRepoPath = Join-Path $scriptPath "contentRepo"
+    if (Test-Path $contentRepoPath)
+    {
+        Remove-Item $contentRepoPath
+    }
     & git clone $contentRepoUrl $contentRepoPath
     $xmlPath = Join-Path $contentRepoPath $xmlPath
     if (-Not (Test-Path $xmlPath))
