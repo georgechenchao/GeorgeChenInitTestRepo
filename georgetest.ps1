@@ -81,10 +81,5 @@ if ($currentCommit -ne $lastCommit -and $changeListForRepo)
     & git push --set-upstream origin $branch
     Pop-Location
 
-    if (Test-Path $contentRepoPath)
-    {
-        Remove-Item $contentRepoPath -Recurse
-    }
-
     Pop-Location
 }
