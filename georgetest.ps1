@@ -64,23 +64,35 @@ if ($currentCommit -ne $lastCommit -and $changeListForRepo)
         & git branch --set-upstream-to=origin/$branch
         & git pull
     }
+    & git push --set-upstream origin $branch
     Pop-Location
 
     if (-Not (Test-Path $xmlPath))
     {
         New-Item $xmlPath -type directory
     }
+    $dllFolderSet.Count;
+    "TEST";
+    "TEST";
+    "TEST";
+    "TEST";
+    "TEST";
+    "TEST";
+    "TEST";
+    "TEST";
+    "TEST";
     ForEach($folderName in $dllFolderSet)
     {
+        "Inner TEST";
         $folderName;
         & $mdocExePath fx-bootstrap (".\" + $folderName)
         & $mdocExePath update -o $xmlPath -fx (".\" + $folderName) -use-docid
     }
 
     Push-Location $contentRepoPath
-    & git add -A
+    & git add .
     & git commit -m "mdoc CI update"
-    & git push --set-upstream origin $branch
+    & git push
     Pop-Location
 
     Pop-Location
