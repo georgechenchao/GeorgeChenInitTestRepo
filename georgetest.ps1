@@ -71,20 +71,8 @@ if ($currentCommit -ne $lastCommit -and $changeListForRepo)
     {
         New-Item $xmlPath -type directory
     }
-    $dllFolderSet.Count;
-    "TEST";
-    "TEST";
-    "TEST";
-    "TEST";
-    "TEST";
-    "TEST";
-    "TEST";
-    "TEST";
-    "TEST";
     ForEach($folderName in $dllFolderSet)
     {
-        "Inner TEST";
-        $folderName;
         & $mdocExePath fx-bootstrap (".\" + $folderName)
         & $mdocExePath update -o $xmlPath -fx (".\" + $folderName) -use-docid
     }
