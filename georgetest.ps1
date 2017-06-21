@@ -23,3 +23,6 @@ $changeListForRepo = &git diff --name-only $lastCommit $currentCommit
 $testText = "Test Text";
 $testText;
 $changeListForRepo;
+$changeListForRepoArray = $changeListForRepo.Split("`n");
+$changeListForRepoArray.Count;
+$changeListForRepoArray;
