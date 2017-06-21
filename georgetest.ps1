@@ -55,7 +55,7 @@ if ($currentCommit -ne $lastCommit -and $changeListForRepo)
     $contentRepoPath = Join-Path $scriptPath "contentRepo"
     if (Test-Path $contentRepoPath)
     {
-        Remove-Item $contentRepoPath
+        Remove-Item $contentRepoPath -Recurse
     }
     & git clone $contentRepoUrl $contentRepoPath
     $xmlPath = Join-Path $contentRepoPath $xmlPath
