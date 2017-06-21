@@ -1,7 +1,7 @@
 ﻿param (
-    [string]$contentRepoUrl = "https://1ddeb6f0cbf6cbf40fdbfbcb43a8da3239d5f5dd@github.com/georgechenchao/georgechenchaoRepo1215041730.git",
-    [string]$branch = "CITest003",
-    [string]$xmlPath = "CITestConsole2/xml"
+    [string]$contentRepoUrl = "https://b21c607a4eaf97f8392be661490b194ef2666b5d@github.com/TianqiZhang/ECMA2YamlTestRepo2.git",
+    [string]$branch = "CITest4",
+    [string]$xmlPath = "fulldocset/xml"
 )
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -16,8 +16,10 @@ $url = "https://github.com/mono/api-doc-tools/releases/download/preview-5.0.0.14
 $currentCommit = $env:GIT_COMMIT
 $lastCommit = $env:GIT_PREVIOUS_COMMIT
 $changeListForRepo = &git diff --name-only $lastCommit $currentCommit
+
 if ($currentCommit -ne $lastCommit -and $changeListForRepo)
 {
+    <# Find out changed folders #>
     $changeListForRepoArray = $changeListForRepo.Split("`n");
     $dllFolderSet = New-Object System.Collections.Generic.List[System.Object];
     ForEach($fileItem in $changeListForRepoArray)
@@ -31,7 +33,6 @@ if ($currentCommit -ne $lastCommit -and $changeListForRepo)
             }
         }
     }
-    $dllFolderSet;
 
     $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
     Push-Location $scriptPath
@@ -53,12 +54,8 @@ if ($currentCommit -ne $lastCommit -and $changeListForRepo)
     Unzip $mdocZipPath $mdocPath
 
     $contentRepoPath = Join-Path $scriptPath "contentRepo"
-    & git clone $contentRepoUrl $contentRepoPath
     $xmlPath = Join-Path $contentRepoPath $xmlPath
-    if (-Not (Test-Path $xmlPath))
-    {
-        New-Item $xmlPath -ItemType directory
-    }
+    & git clone $contentRepoUrl $contentRepoPath
     Push-Location $contentRepoPath
     $checkBr = & git ls-remote --heads $contentRepoUrl $branch
     & git fetch
@@ -76,7 +73,7 @@ if ($currentCommit -ne $lastCommit -and $changeListForRepo)
     }
 
     Push-Location $contentRepoPath
-    & git add .
+    & git add -A
     & git commit -m "mdoc CI update"
     & git push --set-upstream origin $branch
     Pop-Location
